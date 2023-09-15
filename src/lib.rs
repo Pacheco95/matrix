@@ -22,6 +22,11 @@ impl<T, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS> {
     pub fn is_column_vector(&self) -> bool {
         COLS == 1
     }
+
+    #[inline]
+    pub fn elements(&self) -> impl Iterator<Item = &T> {
+        self.0.iter().flat_map(|line| line.iter())
+    }
 }
 
 impl<T, const ROWS: usize, const COLS: usize> Matrix<T, ROWS, COLS>
@@ -72,10 +77,10 @@ where
 
 #[cfg(test)]
 mod test {
-
-    use std::mem::{size_of, size_of_val};
-
     use super::*;
+
+    use itertools::Itertools;
+    use std::mem::{size_of, size_of_val};
 
     type ElementType = i32;
     type Mat<const R: usize, const C: usize> = Matrix<ElementType, R, C>;
@@ -130,5 +135,21 @@ mod test {
                 assert_eq!(el, &0);
             }
         }
+    }
+
+    #[test]
+    fn test_elements_iterator() {
+        let matrix = Mat::<3, 3>::identity();
+
+        let actual = matrix.elements().collect_vec();
+
+        #[rustfmt::skip]
+        let expected = vec![
+            &1, &0, &0,
+            &0, &1, &0,
+            &0, &0, &1,
+        ];
+
+        assert_eq!(actual, expected);
     }
 }
