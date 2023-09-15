@@ -2,8 +2,6 @@ pub mod converters;
 pub mod iters;
 pub mod ops;
 
-use std::ops::{Add, Mul, Sub};
-
 use num_traits::{One, Zero};
 
 #[derive(Debug, Clone, Copy)]
@@ -46,25 +44,6 @@ where
 {
     pub fn ones() -> Self {
         Self([[T::one(); DIM]; DIM])
-    }
-}
-
-impl<T, const DIM: usize> Matrix<T, DIM, DIM>
-where
-    T: Zero + One + Copy,
-{
-    pub fn identity() -> Self {
-        let mut matrix = Self([[T::zero(); DIM]; DIM]);
-
-        for row in 0..DIM {
-            for col in 0..DIM {
-                if row == col {
-                    matrix[row][col] = T::one();
-                }
-            }
-        }
-
-        matrix
     }
 }
 
@@ -124,19 +103,6 @@ mod test {
         let mat: Mat = raw_matrix.try_into().expect("Should never fail");
 
         assert!(size_of_val(&mat) == size_of_val(&raw_matrix));
-    }
-
-    #[test]
-    fn it_shoud_create_identity_matrix() {
-        let matrix = Mat::<3, 3>::identity();
-
-        for (row, col, el) in &matrix {
-            if row == col {
-                assert_eq!(el, &1);
-            } else {
-                assert_eq!(el, &0);
-            }
-        }
     }
 
     #[test]
