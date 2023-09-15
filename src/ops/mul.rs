@@ -9,6 +9,7 @@ where
 {
     type Output = Matrix<T, ROWS, OTHER_COLS>;
 
+    #[inline]
     fn mul(self, rhs: Matrix<T, COLS, OTHER_COLS>) -> Self::Output {
         let mut result: Self::Output = unsafe {
             if self.dim() == rhs.dim() {
@@ -63,8 +64,8 @@ mod tests {
 
     #[test]
     fn it_should_multiplicate_matrices_with_same_dimensions() {
-        type Mat = Matrix<i32, 4, 4>;
-
-        assert_eq!(Mat::identity() * Mat::identity(), Mat::identity());
+        let identity: Matrix<i32, 4, 4> = Matrix::identity();
+        let ones: Matrix<i32, 4, 4> = Matrix::ones();
+        assert_eq!(identity * ones, ones);
     }
 }

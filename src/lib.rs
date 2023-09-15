@@ -2,6 +2,8 @@ pub mod converters;
 pub mod iters;
 pub mod ops;
 
+use std::ops::{Add, Mul, Sub};
+
 use num_traits::{One, Zero};
 
 #[derive(Debug, Clone, Copy)]
