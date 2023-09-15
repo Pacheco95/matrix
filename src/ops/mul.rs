@@ -37,6 +37,23 @@ where
     }
 }
 
+impl<T, const ROWS: usize, const COLS: usize> Mul<T> for Matrix<T, ROWS, COLS>
+where
+    T: Mul<Output = T> + Copy,
+{
+    type Output = Self;
+
+    fn mul(mut self, scalar: T) -> Self {
+        for row in self.0.iter_mut() {
+            for elem in row.iter_mut() {
+                *elem = *elem * scalar;
+            }
+        }
+
+        self
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -67,5 +84,11 @@ mod tests {
         let identity: Matrix<i32, 4, 4> = Matrix::identity();
         let ones: Matrix<i32, 4, 4> = Matrix::ones();
         assert_eq!(identity * ones, ones);
+    }
+
+    #[test]
+    fn it_should_multiplicate_matrices_by_scalars() {
+        let matrix = Matrix([[1, 2], [3, 4], [5, 6]]);
+        assert_eq!(matrix * 2, Matrix([[2, 4], [6, 8], [10, 12]]));
     }
 }
