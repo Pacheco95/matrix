@@ -1,6 +1,6 @@
 pub mod converters;
-pub mod iter;
-pub mod operators;
+pub mod iters;
+pub mod ops;
 
 use num_traits::{One, Zero};
 

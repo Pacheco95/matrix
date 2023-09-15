@@ -32,6 +32,14 @@ impl<T: PartialEq, const ROWS: usize, const COLS: usize> PartialEq<[[T; COLS]; R
     }
 }
 
+impl<T: PartialEq, const ROWS: usize, const COLS: usize> PartialEq<Matrix<T, ROWS, COLS>>
+    for Matrix<T, ROWS, COLS>
+{
+    fn eq(&self, raw: &Self) -> bool {
+        self == &raw.0
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use std::error::Error;
